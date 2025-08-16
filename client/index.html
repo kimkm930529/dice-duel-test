@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주사위 듀얼 - 멀티플레이어</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 주사위 듀얼</h1>
+        
+        <!-- 게임 시작 화면 -->
+        <div id="startScreen" class="screen">
+            <h2>게임 참가</h2>
+            <div class="input-group">
+                <label for="playerName">플레이어 이름:</label>
+                <input type="text" id="playerName" placeholder="이름을 입력하세요" maxlength="10">
+                <button id="joinGameBtn" class="btn primary">게임 참가</button>
+            </div>
+            <div id="waitingMessage" class="waiting-message hidden">
+                <p>다른 플레이어를 기다리는 중...</p>
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+
+        <!-- 게임 화면 -->
+        <div id="gameScreen" class="screen hidden">
+            <div class="game-info">
+                <div class="player-info">
+                    <h2>플레이어: <span id="playerNameDisplay"></span></h2>
+                    <div class="turn-info">
+                        <p>차례: <span id="currentTurn">1</span>/3</p>
+                    </div>
+                </div>
+                <div class="current-player-indicator">
+                    <p id="currentPlayerText">현재 차례: <span id="currentPlayerName"></span></p>
+                </div>
+            </div>
+
+            <div class="game-board">
+                <div class="dice-container">
+                    <div id="dice" class="dice">1</div>
+                    <button id="rollDiceBtn" class="btn primary" disabled>주사위 굴리기</button>
+                </div>
+
+                <div class="score-board">
+                    <div class="player-scores">
+                        <div class="player-score" id="player1Score">
+                            <h3 id="player1Name">플레이어 1</h3>
+                            <p id="player1Total">0</p>
+                            <div class="dice-history" id="player1History"></div>
+                        </div>
+                        <div class="player-score" id="player2Score">
+                            <h3 id="player2Name">플레이어 2</h3>
+                            <p id="player2Total">0</p>
+                            <div class="dice-history" id="player2History"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-status">
+                <div id="gameStatusMessage" class="status-message"></div>
+            </div>
+        </div>
+
+        <!-- 게임 종료 화면 -->
+        <div id="endScreen" class="screen hidden">
+            <h2>게임 종료!</h2>
+            <div class="result-info">
+                <div id="winnerDisplay"></div>
+                <div class="final-scores">
+                    <h3>최종 점수</h3>
+                    <div id="finalScoresList"></div>
+                </div>
+            </div>
+            <button id="newGameBtn" class="btn primary">새 게임</button>
+        </div>
+
+        <!-- 연결 상태 표시 -->
+        <div id="connectionStatus" class="connection-status">
+            <span id="connectionText">연결 중...</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
